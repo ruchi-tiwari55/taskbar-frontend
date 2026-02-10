@@ -23,6 +23,7 @@ import LoginAdmin from "./Admin/LoginAdmin";
 import GetUserTask from "./User_client/GetUserTask";
 import PrivateRoute from "./components/PrivateRoute";
 import Logout from "./Admin/Logout";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 
 function App() {
@@ -43,9 +44,9 @@ function App() {
           {/* <Link to="/admin-dashboard" className="hover:underline">
           Admin dashboard
         </Link> */}
-         <Link to="/user/dashboard" className="hover:underline">
+         {/* <Link to="/user/dashboard" className="hover:underline">
           User Dashboard
-        </Link>
+        </Link> */}
       </nav>
 
       {/* Routes */}
@@ -57,21 +58,30 @@ function App() {
         <Route path="/task" element={<TaskForm />} />
         <Route path="/AdminLogin" element={<AdminLogin />} />
         <Route path="/AdminRegister" element={<AdminRegister />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
-           {/* <Route
-        path="/admin/dashboard"
-        element={
-          <PrivateRoute>
-            <AdminDashboard />
-          </PrivateRoute>
-        } */}
-      {/* /> */}
+        {/* <Route path="/admin-dashboard" element={<AdminDashboard />} /> */}
+           {/* ✅ Dashboard protected */}
+        <Route
+          path="/admin-dashboard"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/user/dashboard"
+          element={
+            <ProtectedRoute>
+              <UserDashboard />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/TaskList" element={<TaskList />} />
         <Route path="/admin/tasks/pending" element={<AdminPendingTasks />} />
         <Route path="/admin/tasks" element={<AdminAllTasks />} />
         <Route path="/admin/tasks/approved" element={<AdminApprovedTasks />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
-        <Route path="/user/dashboard" element={<UserDashboard />} />
+        {/* <Route path="/user/dashboard" element={<UserDashboard />} /> */}
         <Route path="/user/new-task" element={<CreateTask />} />
         <Route path="/user/Allll-Task" element={<Alltasks />} />
         <Route path="/admin/Today-Tasks" element={<TodayTasks />} />

@@ -9,6 +9,21 @@ function UserDashboard() {
     approved: 0,
     rejected: 0,
   });
+  const handleLogout = async () => {
+  try {
+    await axios.post(
+      "http://localhost:5000/api/users/logout",
+      {},
+      { withCredentials: true } // important if cookies used
+    );
+
+    // 🔹 Login page pe redirect
+    navigate("/login");
+  } catch (error) {
+    console.error("Logout failed", error);
+  }
+};
+
 
   const [recentTasks, setRecentTasks] = useState([]);
   const navigate = useNavigate();
@@ -27,7 +42,18 @@ function UserDashboard() {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6">👤 User Dashboard</h1>
+      <div className="flex justify-between items-center mb-6">
+  <h1 className="text-3xl font-bold">👤 User Dashboard</h1>
+
+  <button
+    onClick={handleLogout}
+    className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
+  >
+    🚪 Logout
+  </button>
+</div>
+
+    
 
       {/* STATS */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">

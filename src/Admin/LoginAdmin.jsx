@@ -12,7 +12,7 @@ function LoginAdmin() {
 
   const [error, setError] = useState("");
 
-  // 🔹 input change handler
+  // input change handler
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -20,7 +20,7 @@ function LoginAdmin() {
     });
   };
 
-  // 🔹 login submit
+  // login submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -29,14 +29,25 @@ function LoginAdmin() {
       const res = await axios.post(
         "http://localhost:5000/api/auth/login",
         formData,
-        { withCredentials: true } // cookie ke liye
+        { withCredentials: true }
       );
 
-      if (res.data.success) {
+      console.log("Login Response 👉", res.data);
+
+      if (res.data?.success) {
         alert("Login Successful ✅");
-        navigate("/admin-dashboard");
+        
+      // ✅ Successful login: set localStorage flag
+      localStorage.setItem("adminLoggedIn", "true");
+
+
+        // ✅ SINGLE navigation (safe)
+        navigate("/admin-dashboard", { replace: true });
+      } else {
+        setError(res.data?.message || "Login failed");
       }
     } catch (err) {
+      console.error("Login Error ❌", err);
       setError(err.response?.data?.message || "Login failed");
     }
   };
@@ -51,7 +62,6 @@ function LoginAdmin() {
           Admin Login 🔐
         </h2>
 
-        {/* Email */}
         <input
           type="email"
           name="email"
@@ -59,9 +69,9 @@ function LoginAdmin() {
           value={formData.email}
           onChange={handleChange}
           className="w-full mb-3 p-2 border rounded"
+          required
         />
 
-        {/* Password */}
         <input
           type="password"
           name="password"
@@ -69,6 +79,7 @@ function LoginAdmin() {
           value={formData.password}
           onChange={handleChange}
           className="w-full mb-3 p-2 border rounded"
+          required
         />
 
         {error && (

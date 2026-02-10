@@ -10,27 +10,38 @@ function Login1() {
   const [password, setPassword] = useState(""); // ✅ password state
   const [message, setMessage] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setMessage("");
 
-    try {
-      const res = await axios.post(
-        "http://localhost:5000/api/user/login", // backend login API
-        { email, password } // ✅ send email & password
-      );
+  try {
+    const res = await axios.post(
+      "http://localhost:5000/api/users/login", // ✅ correct API
+      {
+        email,
+        password,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-      setMessage("✅ Login successful");
-      console.log("User data:", res.data.user); // response user data
-          // 🔹 Navigate to /user/dashboard after login
-      setTimeout(() => {
-        navigate("/user/dashboard");
-      }, 1000); // 1 second delay to show message
+    setMessage("✅ Login successful");
 
-    } catch (error) {
-      setMessage("❌ Invalid credentials");
-      console.error("Login error:", error.response?.data || error.message);
-    }
-  };
+    // 🔹 Redirect after login
+    setTimeout(() => {
+      navigate("/user/dashboard");
+    }, 1000);
+
+  } catch (error) {
+    setMessage(
+      error.response?.data?.message || "❌ Invalid credentials"
+    );
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
